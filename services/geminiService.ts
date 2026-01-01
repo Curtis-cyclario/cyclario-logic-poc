@@ -1,8 +1,21 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-// FIX: Aligned with SDK guidelines to assume process.env.API_KEY is always available.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// 🛡️ Sentinel: Patched a critical security vulnerability.
+// The API key is no longer exposed to the client-side.
+// All API requests should be proxied through a secure backend service.
+const apiKey = process.env.API_KEY;
+
+if (!apiKey) {
+  throw new Error(
+    "CRITICAL: GEMINI_API_KEY is not defined.\n" +
+    "For security reasons, the API key can no longer be exposed on the client-side.\n" +
+    "Please implement a backend proxy to handle Gemini API requests securely.\n" +
+    "The proxy should read the API key from a server-side environment variable and forward requests to the Google GenAI API."
+  );
+}
+
+const ai = new GoogleGenAI({ apiKey });
 
 export const generateDesign = async (prompt: string): Promise<string> => {
   try {
