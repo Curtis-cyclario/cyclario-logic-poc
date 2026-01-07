@@ -1,4 +1,10 @@
 
+// 🛡️ SENTINEL SECURITY WARNING 🛡️
+// The use of `process.env.API_KEY` here is a placeholder for development
+// and is NOT secure for production. This key will be exposed on the client-side.
+// See the `vite.config.ts` file for details on the vulnerability and
+// instructions on how to implement a secure backend proxy for production.
+
 import { GoogleGenAI } from "@google/genai";
 
 // FIX: Aligned with SDK guidelines to assume process.env.API_KEY is always available.
