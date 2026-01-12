@@ -18,3 +18,7 @@ View your app in AI Studio: https://ai.studio/apps/drive/19hnRgwY_fZ9VS68oCFuAH5
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+
+## Production Deployment
+
+The current setup uses Vite's development server proxy to securely handle the `GEMINI_API_KEY`. This proxy is **not** available in a production build. To deploy this application, you will need to implement a server-side backend or a serverless function to proxy the API requests to the Google GenAI API and keep your API key secure.
