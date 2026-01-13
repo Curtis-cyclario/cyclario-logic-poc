@@ -8,12 +8,15 @@ export default defineConfig(({ mode }) => {
       server: {
         port: 3000,
         host: '0.0.0.0',
+        proxy: {
+          '/api/generate': {
+            target: `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${env.GEMINI_API_KEY}`,
+            changeOrigin: true,
+            rewrite: (path) => path.replace(/^\/api\/generate/, ''),
+          },
+        },
       },
       plugins: [react()],
-      define: {
-        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
-      },
       resolve: {
         alias: {
           '@': path.resolve(__dirname, '.'),
