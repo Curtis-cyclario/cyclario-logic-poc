@@ -8,12 +8,18 @@ export default defineConfig(({ mode }) => {
       server: {
         port: 3000,
         host: '0.0.0.0',
+        proxy: {
+          // 🛡️ SENTINEL: This proxy is a security measure to prevent the API key from being exposed in the client-side code.
+          // Requests to /api/generate are forwarded to the Google Generative AI API, with the API key injected server-side.
+          // This is a development-only solution. For production, a proper backend is required.
+          '/api/generate': {
+            target: `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-preview:generateContent?key=${env.GEMINI_API_KEY}`,
+            changeOrigin: true,
+            rewrite: (path) => path.replace(/^\/api\/generate/, ''),
+          },
+        },
       },
       plugins: [react()],
-      define: {
-        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
-      },
       resolve: {
         alias: {
           '@': path.resolve(__dirname, '.'),
