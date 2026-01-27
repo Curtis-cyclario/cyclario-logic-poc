@@ -8,12 +8,18 @@ export default defineConfig(({ mode }) => {
       server: {
         port: 3000,
         host: '0.0.0.0',
+        proxy: {
+          // 🛡️ SENTINEL: This proxy is a security measure for development ONLY.
+          // It prevents the GEMINI_API_KEY from being exposed on the client-side.
+          // In production, this server is not used. A proper backend is required.
+          '/api/generate': {
+            target: `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-preview:generateContent?key=${env.GEMINI_API_KEY}`,
+            changeOrigin: true,
+            rewrite: (path) => path.replace(/^\/api\/generate/, ''),
+          },
+        },
       },
       plugins: [react()],
-      define: {
-        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
-      },
       resolve: {
         alias: {
           '@': path.resolve(__dirname, '.'),
