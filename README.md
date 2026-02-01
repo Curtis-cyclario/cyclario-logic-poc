@@ -10,11 +10,11 @@ View your app in AI Studio: https://ai.studio/apps/drive/19hnRgwY_fZ9VS68oCFuAH5
 
 ## Run Locally
 
-**Prerequisites:**  Node.js
-
+**Prerequisites:** Node.js, pnpm (recommended)
 
 1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+   `pnpm install`
+2. Set the `GEMINI_API_KEY` in `.env` to your Gemini API key.
+   *Note: For security, the API key is handled by a Vite development proxy and is never exposed to the client-side bundle.*
 3. Run the app:
-   `npm run dev`
+   `pnpm dev`
