@@ -8,12 +8,18 @@ export default defineConfig(({ mode }) => {
       server: {
         port: 3000,
         host: '0.0.0.0',
+        proxy: {
+          '/api/generate': {
+            target: `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-preview:generateContent?key=${env.GEMINI_API_KEY}`,
+            changeOrigin: true,
+            rewrite: (path) => path.replace(/^\/api\/generate/, ''),
+          }
+        }
       },
       plugins: [react()],
-      define: {
-        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
-      },
+      // SECURITY FIX: Removed 'define' block that exposed GEMINI_API_KEY to the client bundle.
+      // Use the development proxy above for secure API calls during local development.
+      // NOTE: For production, a proper backend proxy is required to handle the API key securely.
       resolve: {
         alias: {
           '@': path.resolve(__dirname, '.'),

@@ -1,0 +1,4 @@
+## 2025-05-22 - [CRITICAL] Fix GEMINI_API_KEY exposure and refactor to secure proxy
+**Vulnerability:** The `GEMINI_API_KEY` was being exposed to the client-side bundle via the `define` property in `vite.config.ts`. This made the secret accessible to anyone viewing the source code in the browser.
+**Learning:** Exposing environment variables directly to the frontend bundle is a common but dangerous practice. Even if the variable is not explicitly used, Vite's `define` can hardcode it into the output.
+**Prevention:** Always use a backend proxy or a dedicated server-side endpoint to handle sensitive API keys. In Vite, `server.proxy` can be used for local development to inject secrets into outgoing requests without exposing them to the client. For production, a proper server-side backend is required.
